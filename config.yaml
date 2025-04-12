@@ -1,5 +1,12 @@
+# you can use environment variables to override the settings provided int he default config or the config file as well
+# to do that use the `SNIPROXY_` prefix, followed by the full tree of the parameter you need to update, separated by two underscores (__)
+# for example, if you want the dns server to be bounded to 0.0.0.0:5555 rather than the default 0.0.0.0:53, you run the sniproxy (or the container)
+# with the following environment variable
+# SNIPROXY_GENERAL__BIND_DNS_OVER_UDP=0.0.0.0:5555
+# note that there are 2 underscores between general and BIND_DNS_OVER_UDP
 general:
   # Upsteam DNS URI. examples: Upstream DNS URI. examples: udp://1.1.1.1:53, tcp://1.1.1.1:53, tcp-tls://1.1.1.1:853, https://dns.google/dns-query
+  # NOTE: if you're using SOCKS, avoid using UDP for upstream DNS
   upstream_dns: udp://8.8.8.8:53
   # enable send DNS through socks5
   upstream_dns_over_socks5: false
@@ -17,18 +24,27 @@ general:
   tls_cert:
   # Path to the certificate key for DoH, DoT and DoQ. eg: /tmp/mycert.key
   tls_key:
-  # HTTP Port to listen on. Should remain 80 in most cases
+  # HTTP Port to listen on. Should remain 80 in most cases. use :80 to listen on both IPv4 and IPv6
   bind_http: "0.0.0.0:80"
+  # bind additional ports for HTTP. a list of portsor ranges separated by commas. example: "8080,8081-8083". follows the same listen address as bind_http
+  bind_http_additional:
   # HTTPS Port to listen on. Should remain 443 in most cases
   bind_https: "0.0.0.0:443"
+  # bind additional ports for HTTPS. a list of portsor ranges separated by commas. example: "8443,8444-8446". follows the same listen address as bind_https
+  bind_https_additional:
   # Enable prometheus endpoint on IP:PORT. example: 127.0.0.1:8080. Always exposes /metrics and only supports HTTP
   bind_prometheus:
   # Interface used for outbound TLS connections. uses OS prefered one if empty
   interface:
+  # Preferred ip version for outgoing connections. choises: ipv4 (or 4), ipv6 (or 6), ipv4only, ipv6only, any. empty (or 0) means any.
+  # numeric values are kept for backward compatibility
+  preferred_version:
   # Public IPv4 of the server, reply address of DNS A queries
   public_ipv4:
   # Public IPv6 of the server, reply address of DNS AAAA queries
   public_ipv6:
+  # allow connections from sniproxy to RFC1918 addresses. default is false.
+  allow_conn_to_local: false
   # log level for the application. choices: debug, info, warn, error
   # by default, the logs are colored so they are not suited for logging to a file.
   # in order to disable colors, set NO_COLOR=true in the environment variables
@@ -49,11 +65,11 @@ acl:
   # CA will be rejected.
   geoip:
     enabled: false
-    # priority of the geoip filter. lower priority means it's checked first, meaning it can be ovveriden by other ACLs with higehr priority number. 
+    # priority of the geoip filter. lower priority means it's checked first, meaning it can be ovveriden by other ACLs with higehr priority number.
     priority: 10
     # strictly blocked countries
     blocked:
-    # allowed countries 
+    # allowed countries
     allowed:
     # Path to the MMDB file. eg: /tmp/Country.mmdb, https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb
     path:
@@ -78,7 +94,7 @@ acl:
     # Interval to re-fetch the domain list
     refresh_interval: 1h0m0s
   # FQDN override. This ACL is used to override the destination IP to not be the one resolved by the upstream DNS or the proxy itself, rather a custom IP and port
-  # if the destination is HTTP, it uses tls_cert and tls_key certificate to terminate the original connection. 
+  # if the destination is HTTP, it uses tls_cert and tls_key certificate to terminate the original connection.
   override:
     enabled: false
     # priority of the override filter. lower priority means it's checked first. if multiple filters have the same priority, they're checked in random order
@@ -91,7 +107,7 @@ acl:
       "one.one.one.one": "1.1.1.1:443"
       "google.com": "8.8.8.8:443"
     # enable listening on DoH on a specific SNI. example: "myawesomedoh.example.com". empty disables it. If you need DoH to be enabled and don't want
-    # any other overrides, enable this ACL with empty rules. DoH SNI will add a default rule and start. 
+    # any other overrides, enable this ACL with empty rules. DoH SNI will add a default rule and start.
     doh_sni: "myawesomedoh.example.com"
     # Path to the certificate for handling tls decryption. eg: /tmp/mycert.pem
     tls_cert:

@@ -1,10 +1,12 @@
 # Shecanak
 
-**build your personal [shecan](https://shecan.ir)**
+**build your personal [shecan](https://shecan.ir)**.
 
-You can use this project to set up your own personal DNS with anti-censorship capabilities by proxying specific domains.
+You can use this project to set up your own personal DNS with anti-sanctions capabilities by proxying specific domains.
 
 **Note:** This project provides configuration and installation scripts (including Docker setup) to simplify the deployment of [mosajjal/sniproxy](https://github.com/mosajjal/sniproxy). All Credit should go to [Ali Mosajjal](https://github.com/mosajjal).
+
+**Note:** Do not use this as a VPN, your IP will get **blocked**; **only** use this with domains that are not available due to **sanctions** (e.g. npm packages, pytorch, tensorflow, etc...).
 
 ## Setup
 
@@ -17,7 +19,7 @@ This is the recommended method as it bundles all dependencies.
 1.  Ensure you have Docker and Docker Compose installed.
 2.  Clone this repository:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/yjavaherian/shecanak --depth 1
     cd shecanak
     ```
 3.  Add the domains you would like to proxy to the `domains.csv` file, one domain per line.
@@ -35,7 +37,7 @@ This method uses a script to install `sniproxy`.
 
 1.  Clone this repository:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/yjavaherian/shecanak --depth 1
     cd shecanak
     ```
 2.  Add the domains you would like to proxy to the `domains.csv` file, one domain per line.

@@ -109,9 +109,8 @@ WorkingDirectory=/tmp
 ExecStart=${INSTALL_DIR}/sniproxy --config ${CONFIG_DIR}/config.yaml
 Restart=on-failure
 RestartSec=5s
-# Optional: Add capabilities instead of running as root if binding to low ports (<1024)
-# AmbientCapabilities=CAP_NET_BIND_SERVICE
-# CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 
 [Install]
 WantedBy=multi-user.target

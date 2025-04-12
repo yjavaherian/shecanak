@@ -1,7 +1,7 @@
 services:
-  sniproxy:
+  shecanak:
     build: .
-    container_name: sniproxy
+    container_name: shecanak
     ports:
       - "53:53/udp"
       - "80:80/tcp"

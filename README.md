@@ -2,14 +2,56 @@
 
 **build your personal [shecan](https://shecan.ir)**
 
-you can use this project to setup your own personal DNS with anti-censorship capabilities.
-simply add domains you would like to proxy in `domains.csv` and then run `docker compose up -d --build`.
+You can use this project to set up your own personal DNS with anti-censorship capabilities by proxying specific domains.
+
+## Setup
+
+Choose one of the following methods to set up Shecanak:
+
+### Method 1: Using Docker (Recommended)
+
+This is the recommended method as it bundles all dependencies.
+
+1.  Ensure you have Docker and Docker Compose installed.
+2.  Clone this repository:
+    ```bash
+    git clone <repository-url>
+    cd shecanak
+    ```
+3.  Add the domains you would like to proxy to the `domains.csv` file, one domain per line.
+4.  Build and run the containers in detached mode:
+    ```bash
+    docker compose up -d --build
+    ```
+    Your DNS server will be running on port 53.
+
+### Method 2: Using Installation Script (Debian-based)
+
+This method uses a script to install `sniproxy`.
+
+**Note:** This script is primarily designed for Debian-based Linux distributions (like Ubuntu, Debian). It may require modifications for other systems.
+
+1.  Clone this repository:
+    ```bash
+    git clone <repository-url>
+    cd shecanak
+    ```
+2.  Add the domains you would like to proxy to the `domains.csv` file, one domain per line.
+3.  Make the installation script executable:
+    ```bash
+    chmod +x install_sniproxy.sh
+    ```
+4.  Run the installation script with root privileges:
+    ```bash
+    sudo ./install_sniproxy.sh
+    ```
+    Your DNS server will be running on port 53.
 
 ## Troubleshooting: Port 53 Conflict with systemd-resolved
 
-On some Linux distributions (like Ubuntu 18.04 and later), the `systemd-resolved` service runs a local DNS stub listener on `127.0.0.53:53`. This can conflict with `sniproxy` if you intend to bind it to port 53 on all interfaces (`0.0.0.0:53`) or the loopback interface (`127.0.0.1:53`).
+On some Linux distributions (like Ubuntu 18.04 and later), the `systemd-resolved` service runs a local DNS stub listener on `127.0.0.53:53`. This can conflict with Shecanak if it tries to bind to port 53 (either directly via the script method or through Docker).
 
-If you encounter errors like "port already in use" or "address already in use" for port 53 when starting the Docker container, follow these steps to disable the `systemd-resolved` stub listener:
+If you encounter errors like "port already in use" or "address already in use" for port 53 when starting the service or the Docker container, follow these steps to disable the `systemd-resolved` stub listener:
 
 1.  **Check if systemd-resolved is using port 53:**
 
@@ -77,4 +119,4 @@ If you encounter errors like "port already in use" or "address already in use" f
       ```
       Note that this file might be overwritten by network management tools.
 
-After completing these steps, port 53 should be available for the `sniproxy` Docker container. You can now try running `docker compose up -d` again.
+After completing these steps, port 53 should be available for Shecanak. You can now try starting the service or running `docker compose up -d` again.

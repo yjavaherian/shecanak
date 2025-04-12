@@ -2,6 +2,8 @@
 
 **build your personal [shecan](https://shecan.ir)**.
 
+> ورژن فارسی [README-fa.md](./README-fa.md)
+
 You can use this project to set up your own personal DNS with anti-sanctions capabilities by proxying specific domains.
 
 **Note:** This project provides configuration and installation scripts (including Docker setup) to simplify the deployment of [mosajjal/sniproxy](https://github.com/mosajjal/sniproxy). All Credit should go to [Ali Mosajjal](https://github.com/mosajjal).

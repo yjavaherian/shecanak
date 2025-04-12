@@ -33,13 +33,13 @@ acl:
     refresh_interval: 24h0m0s
   # domain filtering
   domain:
-    enabled: false # false means ALL domains will be allowed to go through the proxy
+    enabled: true # false means ALL domains will be allowed to go through the proxy
     # priority of the domain filter. lower priority means it's checked first. if multiple filters have the same priority, they're checked in random order
-    priority: 20
+    priority: 1
     # Path to the domain list. eg: /tmp/domainlist.csv. Look at the example file for the format.
-    path:
+    path: "/domains.csv"
     # Interval to re-fetch the domain list
-    refresh_interval: 1h0m0s
+    refresh_interval: 1000h0m0s
   # IP/CIDR filtering
   cidr:
     enabled: false

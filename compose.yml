@@ -6,4 +6,6 @@ services:
       - "53:53/udp"
       - "80:80/tcp"
       - "443:443/tcp"
+    volumes:
+      - ./domains.csv:/domains.csv:ro
     restart: unless-stopped

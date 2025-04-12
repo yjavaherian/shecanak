@@ -1,0 +1,9 @@
+services:
+  sniproxy:
+    build: .
+    container_name: sniproxy
+    ports:
+      - "53:53/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    restart: unless-stopped
